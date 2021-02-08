@@ -1,4 +1,4 @@
-class money:
+class Money:
 
     CURRENCY = "$"
 

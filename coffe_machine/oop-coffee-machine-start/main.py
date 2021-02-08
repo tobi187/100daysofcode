@@ -1,38 +1,32 @@
 from menu import Menu, MenuItem
-from coffee_maker import Coffeemaker
-from money_machine import money
+from coffee_maker import CoffeeMaker
+from money_machine import Money
 
-coffee = Coffeemaker()
+coffee = CoffeeMaker()
 items = Menu()
-money = money()
+money = Money()
 
 stop_machine = False
 
 while not stop_machine:
-    choice = input(f"What you like? We offer")
+    choice = input(f"What you like? We offer {items.get_items()}: ")
+
     if choice == "off":
         break
     elif choice == "report":
         coffee.report()
         money.report()
-    elif not items.find_drink(choice):
-        print(f"enter valid drink idiot not fucking {choice}")
-        continue
-    elif not coffee.is_resource_sufficient(choice):
-        coffee.is_resource_sufficient(choice)
         continue
 
-    pennys = int(input("pennys: "))
-    dimes = int(input("dimes: "))
-    nickles = int(input("nickels: "))
-    quarters = int(input("quarters: "))
+    item = items.find_drink(choice)
 
-    value = pennys * 0.01 + dimes * 0.05 + nickles * 0.10 + quarters * 0.25
+    if not coffee.is_resource_sufficient(item):
+        continue
 
-    money.make_payment(value)
+    is_money_enough = money.make_payment(item.cost)
+    if is_money_enough:
+        coffee.make_coffee(item)
 
-    if money.make_payment(value):
-        coffee.make_coffee(choice)
 
 
 
